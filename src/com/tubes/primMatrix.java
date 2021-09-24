@@ -1,44 +1,112 @@
 package com.tubes;
-import java.util.*;
+import java.util.Scanner;
 
-public class primMatrix {
+class primMatrix {
+    double[][] matrix;
+    int ROW,COL;
     
-    public static double[][] inputMat(){
+    //Matrix tanpa input
+    primMatrix(int row, int col){
+        this.ROW = row;
+        this.COL = col;
+        this.matrix = new double[row][col];
+    }
+
+    //Matrix dengan input, input bisa berasal dari file txt maupun main program
+    primMatrix(double[][] m, int row, int col){
+        this.matrix = m;
+        this.ROW = row;
+        this.COL = col;
+    }
+    
+    void inputMat(){
         Scanner scan = new Scanner(System.in);
-        int row, col;
-
-        do{
-            System.out.print("Banyak baris : ");
-            row = scan.nextInt();
-            if (row<0){
-                System.out.println("Masukkan Salah.");
-            }
-        }while(row<0);
-
-        do{
-            System.out.print("Banyak kolom : ");
-            col = scan.nextInt();
-            if (col<0){
-                System.out.println("Masukkan Salah.");
-            }
-        }while(col<0);
-
-        double[][] matrix = new double[row][col];
-        int i,j;
-        for (i = 0; i<row; i++){
-            for (j = 0; j<col; j++){
-                matrix[i][j] = scan.nextDouble();
+        for (int i = 0; i<this.ROW; i++){
+            for (int j = 0; j<this.COL; j++){
+                this.matrix[i][j] = scan.nextDouble();
             }
         }
-        return matrix;
     }
-
-    public static void displayMatrix(double[][] matrix){
-        for (double[] brs : matrix){
-            for(double el : brs){
-                System.out.print(el + " ");
+    void displayMatrix(){
+        for (int i = 0; i < this.ROW; i++) {
+            for (int j = 0; j < this.COL; j++) {
+                if(j == (this.COL - 1)) {
+                    System.out.printf("%f", this.matrix[i][j]);
+                }else{
+                    System.out.printf("%f \n", this.matrix[i][j]);
+                }
             }
-            System.out.print("\n");
         }
     }
+    
+    void addRowTo(int row1, int row2, int toRow, boolean sum){
+        if(sum){
+            for(int i=0; i<this.COL; i++){
+                this.matrix[toRow][i] = this.matrix[row1][i] + this.matrix[row2][i];
+            }
+        }else{
+            for(int i=0; i<this.COL; i++){
+                this.matrix[toRow][i] = this.matrix[row1][i] - this.matrix[row2][i];
+            }
+        }
+    }
+    
+    void setELMT(int row, int col, double x){
+        this.matrix[row][col] = x;
+    }
+
+    void swapRow(int row1, int row2){
+        double temp;
+        for(int i=0; i<this.COL; i++){
+            temp = this.matrix[row1][i];
+            this.matrix[row1][i] = this.matrix[row2][i];
+            this.matrix[row2][i] = temp;
+        }
+    }
+
+    void multiplyRowConst(int row, double x){
+        for(int i=0; i<this.COL; i++){
+            this.matrix[row][i] *= x;
+        }
+    }
+
+    //Gauss
+    void gauss(){
+
+    }
+    void gaussJordan(){
+        
+    }
+    //Asumsi matrix persegi/ size matrix nxn
+    double determinanKofaktor(primMatrix M){
+        double det;
+        if (this.COL == 2){
+            return (this.matrix[0][0]*this.matrix[1][1] - this.matrix[1][0]*this.matrix[0][1]);
+        }else{
+            det = 0;
+            for(int i=0; i<this.COL; i++){
+                primMatrix MatrixN = new primMatrix(this.ROW-1,this.COL-1);
+                int idxRowNewM = 0;
+                for(int j=0; j<this.ROW; j++){
+                    if(j != 0){
+                        int idxColNewM = 0;
+                        for(int k=0; k<this.COL; k++){
+                            if(k!=i){
+                                MatrixN.setELMT(idxRowNewM, idxColNewM, this.matrix[j][k]);
+                            }
+                        }
+                        idxRowNewM += 1;
+                    }
+                }
+                if (i%2 == 0){
+                    det += this.matrix[0][i]*determinanKofaktor(MatrixN);
+                }else{
+                    det -= this.matrix[0][i]*determinanKofaktor(MatrixN);
+                }
+            }
+        }
+        return det;
+    }
+
 }
+
