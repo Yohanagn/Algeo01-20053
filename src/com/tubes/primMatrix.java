@@ -39,20 +39,40 @@ class primMatrix {
         }
     }
     
-    void addRowTo(int row1, int row2, int toRow, boolean sum){
+    void addRowTo(int row1, int row2, double num, boolean sum){
         if(sum){
             for(int i=0; i<this.COL; i++){
-                this.matrix[toRow][i] = this.matrix[row1][i] + this.matrix[row2][i];
+                this.matrix[row1][i] = this.matrix[row1][i] + this.matrix[row2][i]*num;
             }
         }else{
             for(int i=0; i<this.COL; i++){
-                this.matrix[toRow][i] = this.matrix[row1][i] - this.matrix[row2][i];
+                this.matrix[row1][i] = this.matrix[row1][i] - this.matrix[row2][i]*num;
             }
         }
     }
     
     void setELMT(int row, int col, double x){
         this.matrix[row][col] = x;
+    }
+
+    int getFirstIndex(int ROW) {
+        boolean flag = false;
+        int i = 0;
+
+        while (i < this.COL && !(flag)) {
+            if (this.matrix[ROW][i] != 0) {
+                flag = true;
+            }
+            else {
+                i++;
+            }
+        }
+        if (flag){
+            return i;
+        }
+        else {
+            return this.COL;
+        }
     }
 
     void swapRow(int row1, int row2){
@@ -72,11 +92,59 @@ class primMatrix {
 
     //Gauss
     void gauss(){
+        int k = 0;
+        int i, j;
+        for (i = 0; i < this.ROW; i++) {
+            int l = 0;
+            for (j = 0; j < this.COL; j++) {
+                if(this.matrix[i][j] != 0) {
+                    l = j;
+                    break;
+                }
+            }
+            if (l == this.COL - 1) {
+                this.multiplyRowConst(i, 1/(this.matrix[i][l]));
+            }
+            if (this.matrix[i][i+k] == 0){
+                for (j = i + 1; j < this.COL; j++) {
+                    if (this.matrix[j][i+k] != 0){
+                        this.swapRow(i, j);
+                        break;
+                    }
+                }    
+            }
+            if (this.matrix[i][i+k] != 0) {
+                this.multiplyRowConst(i, 1/(this.matrix[i][i+k]));
+            }
+            for (j = i+1; j<this.COL; j++) {
+                double number = -1 * (this.matrix[j][i+k] / this.matrix[i][i+k];
+                this.addRowTo(j, i, number, true);
+            }
+        }
+    }
+
+    void gaussJordan(){
+        int i, j;
+        int row, col;
+        this.gauss();
+
+        for (i = this.ROW; i >= 1; i--) {
+            while (this.matrix[row][i] == 0) {
+                i--;
+            }
+            if (this.matrix[row][i] == 0) {
+                return;
+            }
+            else {
+                for (j = i - 1; j >= 1; j--) {
+                    double num = -1 * this.matrix[j][getFirstIndex(i)];
+                    this.addRowTo(j, i, num, true);
+                }   
+            }
+        }
 
     }
-    void gaussJordan(){
-        
-    }
+    
     //Asumsi matrix persegi/ size matrix nxn
     double determinanKofaktor(primMatrix M){
         double det;
