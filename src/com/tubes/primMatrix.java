@@ -80,33 +80,32 @@ class primMatrix {
     //Asumsi matrix persegi/ size matrix nxn
     double determinanKofaktor(primMatrix M){
         double det;
-        if (this.COL == 2){
-            return (this.matrix[0][0]*this.matrix[1][1] - this.matrix[1][0]*this.matrix[0][1]);
+        if (M.COL == 2){
+            return (M.matrix[0][0]*M.matrix[1][1] - M.matrix[1][0]*M.matrix[0][1]);
         }else{
             det = 0;
-            for(int i=0; i<this.COL; i++){
-                primMatrix MatrixN = new primMatrix(this.ROW-1,this.COL-1);
+            for(int i=0; i<M.COL; i++){
+                primMatrix MatrixN = new primMatrix(M.ROW-1,M.COL-1);
                 int idxRowNewM = 0;
-                for(int j=0; j<this.ROW; j++){
+                for(int j=0; j<M.ROW; j++){
                     if(j != 0){
                         int idxColNewM = 0;
-                        for(int k=0; k<this.COL; k++){
+                        for(int k=0; k<M.COL; k++){
                             if(k!=i){
-                                MatrixN.setELMT(idxRowNewM, idxColNewM, this.matrix[j][k]);
+                                MatrixN.setELMT(idxRowNewM, idxColNewM, M.matrix[j][k]);
                             }
                         }
                         idxRowNewM += 1;
                     }
                 }
                 if (i%2 == 0){
-                    det += this.matrix[0][i]*determinanKofaktor(MatrixN);
+                    det += M.matrix[0][i]*determinanKofaktor(MatrixN);
                 }else{
-                    det -= this.matrix[0][i]*determinanKofaktor(MatrixN);
+                    det -= M.matrix[0][i]*determinanKofaktor(MatrixN);
                 }
             }
         }
         return det;
-    }
 
 }
 
