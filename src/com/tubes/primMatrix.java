@@ -30,10 +30,10 @@ class primMatrix {
     void displayMatrix(){
         for (int i = 0; i < this.ROW; i++) {
             for (int j = 0; j < this.COL; j++) {
-                if(j == (this.COL - 1)) {
-                    System.out.printf("%f", this.matrix[i][j]);
+                if(j != (this.COL - 1)) {
+                    System.out.printf("%f ", this.matrix[i][j]);
                 }else{
-                    System.out.printf("%f \n", this.matrix[i][j]);
+                    System.out.printf("%f\n", this.matrix[i][j]);
                 }
             }
         }
@@ -106,6 +106,7 @@ class primMatrix {
             }
         }
         return det;
+    }
 
 }
 
