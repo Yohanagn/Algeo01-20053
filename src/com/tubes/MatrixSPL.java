@@ -45,4 +45,25 @@ class MatrixSPL extends primMatrix {
         } 
         return Has;
     }
+    
+      // Mencari nilai Persamaa dengan Invers Matriks
+    primMatrix splInvers(){
+        primMatrix aug = new primMatrix(ROW, COL-1);
+        primMatrix has = new primMatrix(ROW, 1);
+
+        for (int i = 0; i<aug.ROW; i++){
+            for(int j = 0; j<aug.COL; j++){
+                aug.matrix[i][j] = this.matrix[i][j];
+            }
+        }
+        for (int i = 0; i<has.ROW; i++){
+            has.matrix[i][0] = this.matrix[i][COL-1];
+        }
+
+        MatrixInverse augTemp = new MatrixInverse(aug.matrix,aug.ROW, aug.COL);
+        primMatrix inversAug = augTemp.inversCofac();
+        primMatrix hasil = multiplyMatrix(inversAug, has);
+        return hasil;
+    }
+    
 }
