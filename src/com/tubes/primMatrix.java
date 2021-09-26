@@ -94,7 +94,7 @@ class primMatrix {
         primMatrix m3 = new primMatrix(m1.ROW, m2.COL);
         for(int i=0; i<m1.ROW; i++){
             for(int j=0; j<m2.COL; j++){
-                int temp = 0;
+                double temp = 0;
                 for(int k=0; k<m1.COL; k++){
                     temp += m1.matrix[i][k]*m2.matrix[k][j];
                 }
@@ -163,11 +163,11 @@ class primMatrix {
     double determinanKofaktor(primMatrix M){
         double det;
         if (M.COL == 2){
-            return (M.matrix[0][0]*M.matrix[1][1] - M.matrix[1][0]*M.matrix[0][1]);
+            return (M.matrix[0][0]*M.matrix[1][1]) - (M.matrix[1][0]*M.matrix[0][1]);
         }else{
             det = 0;
             for(int i=0; i<M.COL; i++){
-                primMatrix MatrixN = new primMatrix(M.ROW-1,M.COL-1);
+                primMatrix MatrixN = new primMatrix((M.ROW)-1,(M.COL)-1);
                 int idxRowNewM = 0;
                 for(int j=0; j<M.ROW; j++){
                     if(j != 0){
@@ -175,16 +175,18 @@ class primMatrix {
                         for(int k=0; k<M.COL; k++){
                             if(k!=i){
                                 MatrixN.setELMT(idxRowNewM, idxColNewM, M.matrix[j][k]);
+                                idxColNewM += 1;
                             }
                         }
                         idxRowNewM += 1;
                     }
                 }
                 if (i%2 == 0){
-                    det += M.matrix[0][i]*determinanKofaktor(MatrixN);
+                    det += (M.matrix[0][i])*M.determinanKofaktor(MatrixN);
                 }else{
-                    det -= M.matrix[0][i]*determinanKofaktor(MatrixN);
+                    det -= (M.matrix[0][i])*M.determinanKofaktor(MatrixN);
                 }
+
             }
         }
         return det;
