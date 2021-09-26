@@ -89,6 +89,20 @@ class primMatrix {
             this.matrix[row][i] *= x;
         }
     }
+    
+    primMatrix multiplyMatrix(primMatrix m1, primMatrix m2){
+        primMatrix m3 = new primMatrix(m1.ROW, m2.COL);
+        for(int i=0; i<m1.ROW; i++){
+            for(int j=0; j<m2.COL; j++){
+                int temp = 0;
+                for(int k=0; k<m1.COL; k++){
+                    temp += m1.matrix[i][k]*m2.matrix[k][j];
+                }
+                m3.matrix[i][j] = temp;
+            }
+        }
+        return m3;
+    }
 
     //Gauss
     void gauss(){
@@ -211,6 +225,53 @@ class primMatrix {
             }
         }
         return Math.pow(-1, countSwap)*det;
+    }
+    
+    primMatrix identity(){
+        primMatrix M = new primMatrix(this.ROW, this.COL);
+        for(int i=0 ; i<this.ROW; i++){
+            for(int j=0 ; j<this.COL; j++){
+                if(i == j){
+                    M.matrix[i][j] = 1;
+                }else{
+                    M.matrix[i][j] = 0;
+                }
+            }
+        }
+        return M;
+    }
+                                      
+    primMatrix InversOBE(){
+        primMatrix M = new primMatrix(this.matrix, ROW, COL);
+        primMatrix identity = identity();
+        if (determinanKofaktor(M) == 0){
+            identity = null;
+        }else{
+            for(int i=0; i<M.ROW; i++){
+                double denominator = M.matrix[i][i];
+                for(int j=0; j<M.COL ;j++){
+                    M.multiplyRowConst(i, 1/denominator);
+                    identity.multiplyRowConst(i, 1/denominator);
+                }
+                for(int k=i+1; k<M.ROW; k++){
+                    double numerator = M.matrix[k][i];
+                    for(int l=0; l<M.COL; l++){
+                        M.matrix[k][l] -= numerator*M.matrix[i][l];
+                        identity.matrix[k][l] -= numerator*identity.matrix[i][l];
+                    }
+                } 
+            }
+            for(int i=(M.ROW-1); i>0; i--){
+                for(int j=(i-1); j>=0; j--){
+                    double numerator = M.matrix[j][i];
+                    for(int k=(M.COL-1); k>= 0; k--){
+                        M.matrix[j][k] -= numerator*M.matrix[i][k];
+                        identity.matrix[j][k] -= numerator*identity.matrix[i][k];
+                    }
+                }
+            }
+        }
+        return identity;
     }
 }
 
