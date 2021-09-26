@@ -175,6 +175,42 @@ class primMatrix {
         }
         return det;
     }
+    
+    double determinanOBE(){
+        double det=1;
+        int countSwap = 0;
+        if(ROW != COL){
+            det = 0;
+        }
+        else{
+            for(int i=0; i<ROW; i++){
+                if(matrix[i][i] == 0){
+                    //mencari pada kolom dibawahnya yang tidak 0
+                    boolean notFind = true;
+                    int tempIdx = i+1;
+                    while (notFind && tempIdx<ROW){
+                        if (matrix[tempIdx][i] != 0){
+                            swapRow(tempIdx, i);
+                            countSwap += 1;
+                            notFind = false;
+                        }
+                        tempIdx += 1;
 
+                    }
+                }
+                double denominator = matrix[i][i];
+                for(int j=i+1; j<ROW; j++){
+                    double numerator = matrix[j][i];
+                    for(int k=0; k<COL; k++){
+                        matrix[j][k] = matrix[j][k] - ((numerator/denominator)*matrix[i][k]);
+                    }
+                }
+            }
+            for(int i=0; i<ROW; i++){
+                det *= matrix[i][i];
+            }
+        }
+        return Math.pow(-1, countSwap)*det;
+    }
 }
 
