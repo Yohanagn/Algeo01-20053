@@ -33,11 +33,24 @@ class MatrixInterpolasi  extends primMatrix{
         return hasil;
     }
 
-    void interpolasi(){
+   void interpolasi(){
         primMatrix hasil = matrixHasil();
         Scanner scan = new Scanner(System.in);
+        for(int i = 0; i<hasil.ROW; i++){
+            if (i==0){
+                System.out.print(hasil.matrix[i][0]);
+            }else{
+                if (hasil.matrix[i][0] < 0){
+                    System.out.print(" " + hasil.matrix[i][0]+"x^(" + i + ")");
+                }else{
+                    System.out.print(" + " + hasil.matrix[i][0]+"x^(" + i + ")");
+                }
+
+            }
+        }
+
         int n;
-        System.out.print("Banyak titik yang ingin diestimasi : ");
+        System.out.print("\nBanyak titik yang ingin diestimasi : ");
         n = scan.nextInt();
         for(int i = 0; i<n; i++){
             double x;
