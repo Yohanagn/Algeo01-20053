@@ -251,10 +251,8 @@ class primMatrix {
         }else{
             for(int i=0; i<M.ROW; i++){
                 double denominator = M.matrix[i][i];
-                for(int j=0; j<M.COL ;j++){
-                    M.multiplyRowConst(i, 1/denominator);
-                    identity.multiplyRowConst(i, 1/denominator);
-                }
+                M.multiplyRowConst(i, 1/denominator);
+                identity.multiplyRowConst(i, 1/denominator);
                 for(int k=i+1; k<M.ROW; k++){
                     double numerator = M.matrix[k][i];
                     for(int l=0; l<M.COL; l++){
