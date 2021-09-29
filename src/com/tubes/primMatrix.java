@@ -105,39 +105,22 @@ class primMatrix {
     }
 
     //Gauss
-    void gauss(){
-        int k = 0;
-        int i, j;
-        for (i = 0; i < this.ROW; i++) {
-            int l = 0;
-            for (j = 0; j < this.COL; j++) {
-                if(this.matrix[i][j] != 0) {
-                    l = j;
-                    break;
+    primMatrix gauss(){
+        primMatrix M = new primMatrix(this.matrix, ROW, COL);
+        for(int i=0; i<M.ROW; i++){
+            double denominator = M.matrix[i][i];
+            M.multiplyRowConst(i, 1/denominator);
+            for(int k=i+1; k<M.ROW; k++){
+                double numerator = M.matrix[k][i];
+                for(int l=0; l<M.COL; l++){
+                    M.matrix[k][l] -= numerator*M.matrix[i][l];
                 }
-            }
-            if (l == this.COL - 1) {
-                this.multiplyRowConst(i, 1/(this.matrix[i][l]));
-            }
-            if (this.matrix[i][i+k] == 0){
-                for (j = i + 1; j < this.COL; j++) {
-                    if (this.matrix[j][i+k] != 0){
-                        this.swapRow(i, j);
-                        break;
-                    }
-                }    
-            }
-            if (this.matrix[i][i+k] != 0) {
-                this.multiplyRowConst(i, 1/(this.matrix[i][i+k]));
-            }
-            for (j = i+1; j<this.COL; j++) {
-                double number = -1 * (this.matrix[j][i+k] / this.matrix[i][i+k];
-                this.addRowTo(j, i, number, true);
-            }
+            } 
         }
+        return M;
     }
 
-    void gaussJordan(){
+    primMatrix gaussJordan(){
         primMatrix M = new primMatrix(this.matrix, ROW, COL);
         for(int i=0; i<M.ROW; i++){
             double denominator = M.matrix[i][i];
