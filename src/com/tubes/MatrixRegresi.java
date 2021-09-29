@@ -60,7 +60,7 @@ public class MatrixRegresi extends primMatrix{
         Solution += nilai+ "\n";
     }
     
-        // Ini Pakai Rumus (X'X)^(-1)(X'Y);
+        // Ini Pakai Rumus (X'X)^(-1)(X'Y) rumus cepat dari internet;
     primMatrix createX(){
         primMatrix x = new primMatrix(ROW, COL);
 
