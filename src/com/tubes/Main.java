@@ -86,7 +86,6 @@ public class Main {
         System.out.flush();  
         int i;
         Scanner input = new Scanner(System.in);
-        System.out.println("\u000C");
         System.out.println("DETERMINAN\n");
         System.out.println("===================================================");
         System.out.println("1. Reduksi Baris");
