@@ -66,7 +66,24 @@ class primMatrix {
             this.matrix[row2][i] = temp;
         }
     }
-
+    
+    primMatrix takeA(){
+        primMatrix M = new primMatrix(ROW,COL-1);
+        for(int i=0; i<this.ROW; i++){
+            for(int j=0; j<this.COL-1; j++){
+                M.matrix[i][j] = this.matrix[i][j];
+            }
+        }
+        return M;
+    }
+    primMatrix takeb(){
+        primMatrix M = new primMatrix(ROW,1);
+        for(int i=0; i<this.ROW; i++){
+            M.matrix[i][0] = this.matrix[i][COL-1];
+        }
+        return M;
+    }
+    
     //MENGALIKAN BARIS DENGAN KONSTANTA
     void multiplyRowConst(int row, double x){
         for(int i=0; i<this.COL; i++){
