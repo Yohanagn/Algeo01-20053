@@ -138,25 +138,26 @@ class primMatrix {
     }
 
     void gaussJordan(){
-        int i, j;
-        int row, col;
-        this.gauss();
-
-        for (i = this.ROW; i >= 1; i--) {
-            while (this.matrix[row][i] == 0) {
-                i--;
-            }
-            if (this.matrix[row][i] == 0) {
-                return;
-            }
-            else {
-                for (j = i - 1; j >= 1; j--) {
-                    double num = -1 * this.matrix[j][getFirstIndex(i)];
-                    this.addRowTo(j, i, num, true);
-                }   
+        primMatrix M = new primMatrix(this.matrix, ROW, COL);
+        for(int i=0; i<M.ROW; i++){
+            double denominator = M.matrix[i][i];
+            M.multiplyRowConst(i, 1/denominator);
+            for(int k=i+1; k<M.ROW; k++){
+                double numerator = M.matrix[k][i];
+                for(int l=0; l<M.COL; l++){
+                    M.matrix[k][l] -= numerator*M.matrix[i][l];
+                }
+            } 
+        }
+        for(int i=(M.ROW-1); i>0; i--){
+            for(int j=(i-1); j>=0; j--){
+                double numerator = M.matrix[j][i];
+                for(int k=(M.COL-1); k>= 0; k--){
+                    M.matrix[j][k] -= numerator*M.matrix[i][k];
+                }
             }
         }
-
+        return M;
     }
     
     //Asumsi matrix persegi/ size matrix nxn
