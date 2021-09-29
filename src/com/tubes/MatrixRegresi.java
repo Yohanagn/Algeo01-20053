@@ -7,59 +7,6 @@ public class MatrixRegresi extends primMatrix{
 
     void displayMatrix() {super.displayMatrix();}
     primMatrix multiplyMatrix(primMatrix m1, primMatrix m2){return super.multiplyMatrix(m1, m2);}
-    
-    
-    primMatrix makeMatrixRegresi() {
-        MatrixSPL mat = new MatrixSPL(this.ROW, this.COL + 1);
-        int i = 0;
-        int j = 0;
-
-        for (i = 0; i < mat.ROW; i++) {
-            for (j = 0; j < mat.COL; j++) {
-                if (j == 0) {
-                    mat.matrix[i][j] = 1;
-                }
-                else {
-                    mat.matrix[i][j] = this.matrix[i][j-1];
-                }
-            }
-        }
-        return mat;
-    }
-
-    primMatrix matrixHasil() {
-        double[][] mat = makeMatrixRegresi().matrix;
-        int row = makeMatrixRegresi().ROW;
-        int col = makeMatrixRegresi().COL;
-        MatrixSPL Regresi = new MatrixSPL(mat, row, col);
-        primMatrix hasil = Regresi.gaussJordan();
-        return hasil;
-    }
-
-    void Regresi() {
-        primMatrix hasil = matrixHasil();
-        Scanner scan = new Scanner(System.in);
-        String Solution = "Hasil Regresinya: ";
-    
-        for(int i = 0; i<hasil.ROW; i++){
-            double x;
-            System.out.print("Masukkan nilai X"+i+": ");
-            x = scan.nextDouble();
-            double nilaiEstimasi = 0;
-            nilaiEstimasi += hasil.matrix[i][0]*x;
-        }
-
-        double nilai = 0;
-        System.out.print("Nilai Estimasi X adalah:");
-        Solution += "Nilai Estimasi X adalah: \n";
-        for(int i = 0; i<hasil.ROW; i++) {
-            nilai += hasil.matrix[i][0];
-        }
-
-        System.out.print(nilai +"\n");
-        Solution += nilai+ "\n";
-    }
-    
         // Ini Pakai Rumus (X'X)^(-1)(X'Y) rumus cepat dari internet;
     primMatrix createX(){
         primMatrix x = new primMatrix(ROW, COL);
@@ -113,10 +60,6 @@ public class MatrixRegresi extends primMatrix{
         primMatrix hasilReg = multiplyMatrix(temp1, temp2);
         return hasilReg;
     }
-
-
-
-
 
     // Ini Pakai Rumus Yang ada di Spesifikasi Tubes
     primMatrix sigma(){
