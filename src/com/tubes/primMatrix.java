@@ -5,20 +5,19 @@ class primMatrix {
     double[][] matrix;
     int ROW,COL;
     
-    //Matrix tanpa input
     primMatrix(int row, int col){
         this.ROW = row;
         this.COL = col;
         this.matrix = new double[row][col];
     }
 
-    //Matrix dengan input, input bisa berasal dari file txt maupun main program
     primMatrix(double[][] m, int row, int col){
         this.matrix = m;
         this.ROW = row;
         this.COL = col;
     }
     
+    //INPUT MATRIKS
     void inputMat(){
         Scanner scan = new Scanner(System.in);
         for (int i = 0; i<this.ROW; i++){
@@ -27,10 +26,12 @@ class primMatrix {
             }
         }
     }
+    
+    //TAMPILKAN MATRIKS
     void displayMatrix(){
         for (int i = 0; i < this.ROW; i++) {
             for (int j = 0; j < this.COL; j++) {
-                if(j != (this.COL - 1)) {
+                if(j != ((this.COL) - 1)) {
                     System.out.printf("%f ", this.matrix[i][j]);
                 }else{
                     System.out.printf("%f\n", this.matrix[i][j]);
@@ -39,42 +40,24 @@ class primMatrix {
         }
     }
     
-    void addRowTo(int row1, int row2, double num, boolean sum){
-        if(sum){
-            for(int i=0; i<this.COL; i++){
-                this.matrix[row1][i] = this.matrix[row1][i] + this.matrix[row2][i]*num;
-            }
-        }else{
-            for(int i=0; i<this.COL; i++){
-                this.matrix[row1][i] = this.matrix[row1][i] - this.matrix[row2][i]*num;
-            }
-        }
-    }
-    
     void setELMT(int row, int col, double x){
         this.matrix[row][col] = x;
     }
 
-    int getFirstIndex(int ROW) {
-        boolean flag = false;
-        int i = 0;
-
-        while (i < this.COL && !(flag)) {
-            if (this.matrix[ROW][i] != 0) {
-                flag = true;
+    //OPERASI PENJUMLAHAN ANTAR DUA BARIS
+    void addRowTo(int row1, int row2, int toRow, boolean sum){
+        if(sum){
+            for(int i=0; i<this.COL; i++){
+                this.matrix[toRow][i] = this.matrix[row1][i] + this.matrix[row2][i];
             }
-            else {
-                i++;
+        }else{
+            for(int i=0; i<this.COL; i++){
+                this.matrix[toRow][i] = this.matrix[row1][i] - this.matrix[row2][i];
             }
-        }
-        if (flag){
-            return i;
-        }
-        else {
-            return this.COL;
         }
     }
 
+    //TUKAR BARIS
     void swapRow(int row1, int row2){
         double temp;
         for(int i=0; i<this.COL; i++){
@@ -84,17 +67,19 @@ class primMatrix {
         }
     }
 
+    //MENGALIKAN BARIS DENGAN KONSTANTA
     void multiplyRowConst(int row, double x){
         for(int i=0; i<this.COL; i++){
             this.matrix[row][i] *= x;
         }
     }
-    
+
+    //MENGALIKAN 2 BUAH BARIS
     primMatrix multiplyMatrix(primMatrix m1, primMatrix m2){
         primMatrix m3 = new primMatrix(m1.ROW, m2.COL);
         for(int i=0; i<m1.ROW; i++){
             for(int j=0; j<m2.COL; j++){
-                double temp = 0;
+                int temp = 0;
                 for(int k=0; k<m1.COL; k++){
                     temp += m1.matrix[i][k]*m2.matrix[k][j];
                 }
@@ -103,11 +88,22 @@ class primMatrix {
         }
         return m3;
     }
-
-    //Gauss
+    
+    //OPERASI ELEMINASI GAUSS
     primMatrix gauss(){
         primMatrix M = new primMatrix(this.matrix, ROW, COL);
         for(int i=0; i<M.ROW; i++){
+            if(matrix[i][i] == 0){
+                boolean notFind = true;
+                int tempIdx = i+1;
+                while (notFind && tempIdx<ROW){
+                    if (matrix[tempIdx][i] != 0){
+                        swapRow(tempIdx, i);
+                        notFind = false;
+                    }
+                    tempIdx += 1;
+                }
+            }
             double denominator = M.matrix[i][i];
             M.multiplyRowConst(i, 1/denominator);
             for(int k=i+1; k<M.ROW; k++){
@@ -120,9 +116,21 @@ class primMatrix {
         return M;
     }
 
+    //OPERASI ELEMINASI GAUSS JORDAN
     primMatrix gaussJordan(){
         primMatrix M = new primMatrix(this.matrix, ROW, COL);
         for(int i=0; i<M.ROW; i++){
+            if(matrix[i][i] == 0){
+                boolean notFind = true;
+                int tempIdx = i+1;
+                while (notFind && tempIdx<ROW){
+                    if (matrix[tempIdx][i] != 0){
+                        swapRow(tempIdx, i);
+                        notFind = false;
+                    }
+                    tempIdx += 1;
+                }
+            }
             double denominator = M.matrix[i][i];
             M.multiplyRowConst(i, 1/denominator);
             for(int k=i+1; k<M.ROW; k++){
@@ -143,7 +151,7 @@ class primMatrix {
         return M;
     }
     
-    //Asumsi matrix persegi/ size matrix nxn
+    //DETERMINAN MATRIKS DENGAN METODE KOFAKTOR
     double determinanKofaktor(primMatrix M){
         double det;
         if (M.COL == 2){
@@ -170,12 +178,13 @@ class primMatrix {
                 }else{
                     det -= (M.matrix[0][i])*M.determinanKofaktor(MatrixN);
                 }
-
+                
             }
         }
         return det;
     }
-    
+
+    //DETERMINAN MATRIKS DENGAN OPERASI BARIS ELEMENTER
     double determinanOBE(){
         double det=1;
         int countSwap = 0;
@@ -185,7 +194,6 @@ class primMatrix {
         else{
             for(int i=0; i<ROW; i++){
                 if(matrix[i][i] == 0){
-                    //mencari pada kolom dibawahnya yang tidak 0
                     boolean notFind = true;
                     int tempIdx = i+1;
                     while (notFind && tempIdx<ROW){
@@ -195,7 +203,6 @@ class primMatrix {
                             notFind = false;
                         }
                         tempIdx += 1;
-
                     }
                 }
                 double denominator = matrix[i][i];
@@ -212,7 +219,8 @@ class primMatrix {
         }
         return Math.pow(-1, countSwap)*det;
     }
-    
+
+    //IDENTITAS MATRIKS DENGAN UKURAN YANG SAMA DENGAN OBJECT
     primMatrix identity(){
         primMatrix M = new primMatrix(this.ROW, this.COL);
         for(int i=0 ; i<this.ROW; i++){
@@ -226,7 +234,8 @@ class primMatrix {
         }
         return M;
     }
-                                      
+    
+    //INVERS MATRIKS DENGAN OPERASI BARIS ELEMENTER
     primMatrix InversOBE(){
         primMatrix M = new primMatrix(this.matrix, ROW, COL);
         primMatrix identity = identity();
@@ -234,6 +243,18 @@ class primMatrix {
             identity = null;
         }else{
             for(int i=0; i<M.ROW; i++){
+                if(matrix[i][i] == 0){
+                    boolean notFind = true;
+                    int tempIdx = i+1;
+                    while (notFind && tempIdx<ROW){
+                        if (matrix[tempIdx][i] != 0){
+                            swapRow(tempIdx, i);
+                            identity.swapRow(tempIdx,i);
+                            notFind = false;
+                        }
+                        tempIdx += 1;
+                    }
+                }
                 double denominator = M.matrix[i][i];
                 M.multiplyRowConst(i, 1/denominator);
                 identity.multiplyRowConst(i, 1/denominator);
