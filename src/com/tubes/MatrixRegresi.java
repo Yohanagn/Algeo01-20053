@@ -185,7 +185,7 @@ public class MatrixRegresi extends primMatrix{
     }
    
    //Untuk Menampilkan Hasil Regresi dan Meregresi Nilai X yang dimasukkan
-    void estimasiReq(){
+   double[] estimasiReq(){
         primMatrix hasil = HasilReg();
         Scanner scan = new Scanner(System.in);
         System.out.println("Persamaan Regresi adalah : ");
@@ -211,5 +211,16 @@ public class MatrixRegresi extends primMatrix{
             nilaiEstimasi += hasil.matrix[j][hasil.COL-1]*x[j-1];
         }
         System.out.printf("Hasil Regresi adalah : %.3f", nilaiEstimasi);
+
+        double[] req = new double[x.length+1];
+        for(int i = 0; i<req.length; i++){
+            if(i==req.length-1){
+                req[i] = nilaiEstimasi;
+            }else{
+                req[i] = x[i];
+            }
+        }
+
+        return req;
     }
 }
