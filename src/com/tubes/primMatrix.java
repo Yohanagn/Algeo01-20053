@@ -108,28 +108,35 @@ class primMatrix {
     
     //OPERASI ELEMINASI GAUSS
     primMatrix gauss(){
-        primMatrix M = new primMatrix(this.matrix, ROW, COL);
+        primMatrix M = new primMatrix(this.matrix, this.ROW, this.COL);
         for(int i=0; i<M.ROW; i++){
-            if(matrix[i][i] == 0){
-                boolean notFind = true;
-                int tempIdx = i+1;
-                while (notFind && tempIdx<ROW){
-                    if (matrix[tempIdx][i] != 0){
-                        swapRow(tempIdx, i);
-                        notFind = false;
-                    }
-                    tempIdx += 1;
+            int tempIdxBrs = i;
+            int tempIdxKol = i;
+            boolean leadRowIsZero = false;
+            if(M.matrix[tempIdxBrs][tempIdxKol] == 0){
+                leadRowIsZero = true;
+            }
+            while(leadRowIsZero){
+                if (M.matrix[tempIdxBrs][tempIdxKol] != 0){
+                    M.swapRow(i, tempIdxBrs);
+                    leadRowIsZero = false;
+                }
+                tempIdxBrs += 1;
+                if(tempIdxBrs >= M.ROW && leadRowIsZero){
+                    tempIdxBrs = i;
+                    tempIdxKol += 1;
                 }
             }
-            double denominator = M.matrix[i][i];
+            double denominator = M.matrix[i][tempIdxKol];
             M.multiplyRowConst(i, 1/denominator);
-            for(int k=i+1; k<M.ROW; k++){
-                double numerator = M.matrix[k][i];
-                for(int l=0; l<M.COL; l++){
-                    M.matrix[k][l] -= numerator*M.matrix[i][l];
+            for(int j=i+1; j<M.ROW; j++){
+                double numerator = M.matrix[j][tempIdxKol];
+                for (int k=0; k<M.COL; k++){
+                    M.matrix[j][k] -= numerator*M.matrix[i][k];
                 }
-            } 
+            }
         }
+        
         return M;
     }
 
@@ -137,31 +144,31 @@ class primMatrix {
     primMatrix gaussJordan(){
         primMatrix M = new primMatrix(this.matrix, ROW, COL);
         for(int i=0; i<M.ROW; i++){
-            if(matrix[i][i] == 0){
-                boolean notFind = true;
-                int tempIdx = i+1;
-                while (notFind && tempIdx<ROW){
-                    if (matrix[tempIdx][i] != 0){
-                        swapRow(tempIdx, i);
-                        notFind = false;
-                    }
-                    tempIdx += 1;
+            int tempIdxBrs = i;
+            int tempIdxKol = i;
+            boolean leadRowIsZero = false;
+            if(M.matrix[tempIdxBrs][tempIdxKol] == 0){
+                leadRowIsZero = true;
+            }
+            while(leadRowIsZero){
+                if (M.matrix[tempIdxBrs][tempIdxKol] != 0){
+                    M.swapRow(i, tempIdxBrs);
+                    leadRowIsZero = false;
+                }
+                tempIdxBrs += 1;
+                if(tempIdxBrs >= M.ROW && leadRowIsZero){
+                    tempIdxBrs = i;
+                    tempIdxKol += 1;
                 }
             }
-            double denominator = M.matrix[i][i];
+            double denominator = M.matrix[i][tempIdxKol];
             M.multiplyRowConst(i, 1/denominator);
-            for(int k=i+1; k<M.ROW; k++){
-                double numerator = M.matrix[k][i];
-                for(int l=0; l<M.COL; l++){
-                    M.matrix[k][l] -= numerator*M.matrix[i][l];
-                }
-            } 
-        }
-        for(int i=(M.ROW-1); i>0; i--){
-            for(int j=(i-1); j>=0; j--){
-                double numerator = M.matrix[j][i];
-                for(int k=(M.COL-1); k>= 0; k--){
-                    M.matrix[j][k] -= numerator*M.matrix[i][k];
+            for(int j=0; j<M.ROW; j++){
+                double numerator = M.matrix[j][tempIdxKol];
+                for(int k=0; k<M.COL; k++){
+                    if(j!=i){
+                        M.matrix[j][k] -= numerator*M.matrix[i][k];
+                    }
                 }
             }
         }
