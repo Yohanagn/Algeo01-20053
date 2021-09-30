@@ -6,11 +6,11 @@ import java.util.*;
 public class fromtoFile {
 
     public static String letak(){
-        return System.getProperty("user.dir") + "\\docs\\testCase";
+        return System.getProperty("user.dir") + "\\test\\testCase";
     }
 
     public static String saveLetak(){
-        return System.getProperty("user.dir") + "\\docs\\hasil";
+        return System.getProperty("user.dir") + "\\test\\hasil";
     }
 
     public static boolean thereAreFile(String filename){
@@ -37,6 +37,7 @@ public class fromtoFile {
         return file;
     }
 
+    // Mencari Ukuran Matriks
     public static int[] ukuranMat(String filename){
         int row = 0;
         int col = 0;
@@ -66,12 +67,13 @@ public class fromtoFile {
         return size;
     }
 
+    //Membuat file txt menjadi Matrix
     public static double[][] fileToMat(String filename){
         File file = new File(letak() +"\\"+ filename);
         int[] ukuran = ukuranMat(filename);
         int row = ukuran[0];
         int col = ukuran[1];
-        double[][] toMat = new double[row][col];
+        double[][] Mat = new double[row][col];
 
         try{
             Scanner matrix = new Scanner(file);
@@ -80,25 +82,25 @@ public class fromtoFile {
             for(i = 0; i<row; i++){
                 for(j = 0; j<col; j++){
                     if(matrix.hasNextDouble()){
-                        toMat[i][j] = matrix.nextDouble();
+                        Mat[i][j] = matrix.nextDouble();
                     }
                 }
             }
         } catch (FileNotFoundException e){
 
         }
-        return toMat;
+        return Mat;
     }
 
-
+    // save ke txt
     public static boolean confirmSave(){
         boolean save = false;
         int pilihan;
         Scanner scan = new Scanner(System.in);
         do{
-            System.out.println("====Save====");
+            System.out.println("\n====Save====");
             System.out.println("1. Ya");
-            System.out.println("2.Tidak");
+            System.out.println("2. Tidak");
             System.out.print("==> ");
             pilihan = scan.nextInt();
             if (pilihan == 1 ){
@@ -112,6 +114,7 @@ public class fromtoFile {
         return save;
     }
 
+    //Membuat file baru dan mengecek apakah file dengan nama tersebut sudah ada atau tidak
     public static String createFile(){
         String filename;
         File file;
@@ -134,7 +137,9 @@ public class fromtoFile {
         } while(!fileexist);
         return filename;
     }
+    
 
+    // Membuat Matriks menjadi file --> Dipakai di matriks Balikan
     public static void matToFile(String filename, double[][] matrix){
         try{
             FileWriter newFile = new FileWriter(saveLetak()+"\\"+filename);
@@ -143,6 +148,66 @@ public class fromtoFile {
                     newFile.write(el + " ");
                 }
                 newFile.write("\n");
+            }
+            newFile.close();
+        }catch (IOException e){
+
+        }
+    }
+
+
+
+    //Interpolasi Ke File
+    public static void interToFile(String filename, double[][] matrix, double[] est){
+        int idxcol = matrix[0].length-1;
+        try{
+            FileWriter newFile = new FileWriter(saveLetak()+"\\"+filename);
+            newFile.write("Persamaan Interpolasi : ");
+            for(int i = 0; i<matrix.length; i++){
+                if (i==0){
+                    newFile.write("" + matrix[i][idxcol]);
+                }else{
+                    if (matrix[i][idxcol] < 0){
+                        newFile.write(" "+ matrix[i][idxcol]+ "X^("+i+")");
+                    }else{
+                        newFile.write(" +"+ matrix[i][idxcol]+ "X^("+i+")");
+                    }
+                }
+            }
+            newFile.write("\n\n");
+            newFile.write("Hasil Estimasi X= " + est[0] + " adalah " + est[1]);
+            newFile.close();
+        }catch (IOException e){
+
+        }
+    }
+
+
+    //Regresi Ke File
+    public static void regToFile(String filename, double[][] matrix, double[] req){
+        int idxcol = matrix[0].length-1;
+        try{
+            FileWriter newFile = new FileWriter(saveLetak()+"\\"+filename);
+            newFile.write("Persamaan Regresi : ");
+            for(int i = 0; i<matrix.length; i++){
+                if (i==0){
+                    newFile.write("" + matrix[i][idxcol]);
+                }else{
+                    if (matrix[i][idxcol] < 0){
+                        newFile.write(" "+ matrix[i][idxcol]+ "X"+i);
+                    }else{
+                        newFile.write(" +"+ matrix[i][idxcol]+ "X"+i);
+                    }
+                }
+            }
+            newFile.write("\n\n");
+            newFile.write("Hasil Regresi dengan ");
+            for(int i = 0; i<req.length; i++){
+                if(i == req.length-1){
+                    newFile.write("adalah " + req[i]);
+                }else{
+                    newFile.write("X"+(i+1)+"= "+req[i]+" ");
+                }
             }
             newFile.close();
         }catch (IOException e){
