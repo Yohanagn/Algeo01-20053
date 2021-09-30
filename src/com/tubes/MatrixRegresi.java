@@ -2,12 +2,13 @@ package com.tubes;
 import java.util.Scanner;
 
 public class MatrixRegresi extends primMatrix{
-    MatrixRegresi(int row, int col) {super(row, col);}
-    MatrixRegresi(double [][] newmat, int row, int col) {super(newmat, row, col);}
-
-    void displayMatrix() {super.displayMatrix();}
+   MatrixRegresi(int row, int col){super(row, col);}
+    MatrixRegresi(double[][] m, int row, int col){super(m, row, col);}
     primMatrix multiplyMatrix(primMatrix m1, primMatrix m2){return super.multiplyMatrix(m1, m2);}
-        // Ini Pakai Rumus (X'X)^(-1)(X'Y) rumus cepat dari internet;
+
+
+
+    // Ini Pakai Rumus (X'X)^(-1)(X'Y);
     primMatrix createX(){
         primMatrix x = new primMatrix(ROW, COL);
 
@@ -60,6 +61,10 @@ public class MatrixRegresi extends primMatrix{
         primMatrix hasilReg = multiplyMatrix(temp1, temp2);
         return hasilReg;
     }
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
+
+
+
 
     // Ini Pakai Rumus Yang ada di Spesifikasi Tubes
     primMatrix sigma(){
@@ -175,5 +180,33 @@ public class MatrixRegresi extends primMatrix{
         primMatrix temp = new MatrixSPL(MatReg.matrix, MatReg.ROW, MatReg.COL);
         primMatrix hasilreq = temp.gaussJordan();
         return hasilreq;
+    }
+
+    void estimasiReq(){
+        primMatrix hasil = HasilReg();
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Persamaan Regresi adalah : ");
+        for(int i = 0; i<hasil.ROW; i++){
+            if (i==0){
+                System.out.printf("%.3f", hasil.matrix[i][hasil.COL-1]);
+            }else{
+                if (hasil.matrix[i][hasil.COL-1] < 0){
+                    System.out.printf(" %.3fX%d", hasil.matrix[i][hasil.COL-1], i);
+                }else{
+                    System.out.printf(" +%.3fX%d", hasil.matrix[i][hasil.COL-1], i);
+                }
+
+            }
+        }
+        double[] x = new double[hasil.ROW-1];
+        System.out.print("\nMasukkan nilai X : ");
+        for (int i = 0; i<x.length; i++){
+            x[i] = scan.nextDouble();
+        }
+        double nilaiEstimasi = hasil.matrix[0][hasil.COL-1];
+        for(int j = 1; j<hasil.ROW; j++){
+            nilaiEstimasi += hasil.matrix[j][hasil.COL-1]*x[j-1];
+        }
+        System.out.printf("Hasil Regresi adalah : %.3f", nilaiEstimasi);
     }
 }
