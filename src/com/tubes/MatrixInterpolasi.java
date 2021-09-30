@@ -23,7 +23,8 @@ class MatrixInterpolasi  extends primMatrix{
         }
         return mNew;
     }
-
+    
+    // Hasil Interpolasiw
     primMatrix matrixHasil(){
         double[][] m = makeInterMatrix().matrix;
         int row = makeInterMatrix().ROW;
@@ -32,7 +33,8 @@ class MatrixInterpolasi  extends primMatrix{
         primMatrix hasil = interpolasi.gaussJordan();
         return hasil;
     }
-
+    
+    //Menampilkan Hasil Interpolasi dan Meng-estimasi nilai X masukan
     void interpolasi(){
         primMatrix hasil = matrixHasil();
         Scanner scan = new Scanner(System.in);
