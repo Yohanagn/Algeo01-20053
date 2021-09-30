@@ -28,41 +28,35 @@ class MatrixInterpolasi  extends primMatrix{
         double[][] m = makeInterMatrix().matrix;
         int row = makeInterMatrix().ROW;
         int col = makeInterMatrix().COL;
-        MatrixSPL interpolasi = new MatrixSPL(m, row, col);
-        primMatrix hasil = interpolasi.Cramer();
+        primMatrix interpolasi = new primMatrix(m, row, col);
+        primMatrix hasil = interpolasi.gaussJordan();
         return hasil;
     }
 
-   void interpolasi(){
+    void interpolasi(){
         primMatrix hasil = matrixHasil();
         Scanner scan = new Scanner(System.in);
+        System.out.println("Persamaan Interpolasi : ");
         for(int i = 0; i<hasil.ROW; i++){
             if (i==0){
-                System.out.print(hasil.matrix[i][0]);
+                System.out.printf("%.3f", hasil.matrix[i][hasil.COL-1]);
             }else{
-                if (hasil.matrix[i][0] < 0){
-                    System.out.print(" " + hasil.matrix[i][0]+"x^(" + i + ")");
+                if (hasil.matrix[i][hasil.COL-1] < 0){
+                    System.out.printf(" %.3fX^(%d)", hasil.matrix[i][hasil.COL-1], i);
                 }else{
-                    System.out.print(" + " + hasil.matrix[i][0]+"x^(" + i + ")");
+                    System.out.printf(" +%.3fX^(%d)", hasil.matrix[i][hasil.COL-1], i);
                 }
 
             }
         }
+        double x;
+        System.out.print("\nMasukkan nilai X yang ingin diestimasi ( dalam rentang X-min dan X-max yang telah dimasukkan ) : ");
+        x = scan.nextDouble();
+        double nilaiEstimasi = 0;
 
-        int n;
-        System.out.print("\nBanyak titik yang ingin diestimasi : ");
-        n = scan.nextInt();
-        for(int i = 0; i<n; i++){
-            double x;
-            System.out.print("Masukkan nilai X yang ingin diestimasi ( dalam rentang X-min dan X-max yang telah dimasukkan ) : ");
-            x = scan.nextDouble();
-            double nilaiEstimasi = 0;
-
-            for(int j = 0; j<hasil.ROW; j++){
-                nilaiEstimasi += hasil.matrix[j][0]*Math.pow(x, j);
-            }
-            System.out.println("Nilai estimasi untuk X adalah : " + nilaiEstimasi);
+        for(int j = 0; j<hasil.ROW; j++){
+            nilaiEstimasi += hasil.matrix[j][hasil.COL-1]*Math.pow(x, j);
         }
-        
+        System.out.printf("Nilai estimasi untuk X adalah : %.3f", nilaiEstimasi);
     }
 }
