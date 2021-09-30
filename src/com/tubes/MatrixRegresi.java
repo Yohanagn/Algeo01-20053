@@ -7,8 +7,9 @@ public class MatrixRegresi extends primMatrix{
     primMatrix multiplyMatrix(primMatrix m1, primMatrix m2){return super.multiplyMatrix(m1, m2);}
 
 
-
-    // Ini Pakai Rumus (X'X)^(-1)(X'Y);
+   //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
+    // Ini Pakai Rumus (X'X)^(-1)(X'Y)
+   // Hanya Untuk COBA-COBA
     primMatrix createX(){
         primMatrix x = new primMatrix(ROW, COL);
 
@@ -67,6 +68,7 @@ public class MatrixRegresi extends primMatrix{
 
 
     // Ini Pakai Rumus Yang ada di Spesifikasi Tubes
+   // Program Yang dipakai di program Utama
     primMatrix sigma(){
         primMatrix sigma = new primMatrix(1, COL-1);
         for(int i = 0; i<COL-1; i++){
@@ -174,14 +176,15 @@ public class MatrixRegresi extends primMatrix{
         }
         return MatReg;
     }
-
+   // Hasil Regresi
     primMatrix HasilReg(){
         primMatrix MatReg = createMatrixReg();
         primMatrix temp = new MatrixSPL(MatReg.matrix, MatReg.ROW, MatReg.COL);
         primMatrix hasilreq = temp.gaussJordan();
         return hasilreq;
     }
-
+   
+   //Untuk Menampilkan Hasil Regresi dan Meregresi Nilai X yang dimasukkan
     void estimasiReq(){
         primMatrix hasil = HasilReg();
         Scanner scan = new Scanner(System.in);
