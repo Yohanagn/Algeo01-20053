@@ -35,7 +35,7 @@ class MatrixInterpolasi  extends primMatrix{
     }
     
     //Menampilkan Hasil Interpolasi dan Meng-estimasi nilai X masukan
-    void interpolasi(){
+    double[] interpolasi(){
         primMatrix hasil = matrixHasil();
         Scanner scan = new Scanner(System.in);
         System.out.println("Persamaan Interpolasi : ");
@@ -51,6 +51,7 @@ class MatrixInterpolasi  extends primMatrix{
 
             }
         }
+        double[] est = new double[2];
         double x;
         System.out.print("\nMasukkan nilai X yang ingin diestimasi ( dalam rentang X-min dan X-max yang telah dimasukkan ) : ");
         x = scan.nextDouble();
@@ -60,5 +61,8 @@ class MatrixInterpolasi  extends primMatrix{
             nilaiEstimasi += hasil.matrix[j][hasil.COL-1]*Math.pow(x, j);
         }
         System.out.printf("Nilai estimasi untuk X adalah : %.3f", nilaiEstimasi);
+        est[0] = x;
+        est[1] = nilaiEstimasi;
+        return est;
     }
 }
