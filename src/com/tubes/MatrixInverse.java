@@ -7,9 +7,25 @@ class MatrixInverse extends primMatrix{
     
     void addRowTo(int row1, int row2, int toRow, boolean sum){super.addRowTo(row1, row2, toRow, sum);}
     void displayMatrix(){super.displayMatrix();}
-
+    
     double determinanKofaktor(primMatrix M){return super.determinanKofaktor(M);}
-
+    
+    // INVERSE DENGAN OPERASI BARIS ELEMENTER (Inherit dari primMatrix)
+    primMatrix InversOBE(){return super.InversOBE();}
+    
+    // INVERSE DENGAN ADJOIN
+    primMatrix inversCofac(){
+        primMatrix M = new primMatrix(matrix, ROW, COL);
+        double det = determinanKofaktor(M);
+        primMatrix invers = new primMatrix(ROW, COL);
+        adjoin();
+        for (int i = 0; i < ROW; ++i){
+            for (int j = 0; j < COL; ++j){
+                invers.matrix[i][j] = this.matrix[i][j] * (1/det);
+            }
+        }
+        return invers;
+    }
     void transpose(){
         primMatrix temp = new primMatrix(COL, ROW);
         for(int i = 0 ; i<this.COL; i++){
@@ -26,9 +42,7 @@ class MatrixInverse extends primMatrix{
                 this.matrix[i][j] = temp.matrix[i][j];
             }
         }
-
     }
-
     primMatrix subMatrix(int row, int col){
         primMatrix subMatrix = new primMatrix(ROW-1, COL-1);
         int subRow = 0;
@@ -47,7 +61,6 @@ class MatrixInverse extends primMatrix{
         }
         return subMatrix;
     }
-
     primMatrix Cofacator(){
         primMatrix mNew = new primMatrix(ROW, COL);
         for (int i = 0; i < ROW; ++i){
@@ -57,24 +70,9 @@ class MatrixInverse extends primMatrix{
         }
         return mNew;
     }
-
     void adjoin(){
         this.matrix = Cofacator().matrix;
         transpose();
-    }
-
-    // Mencari invers dengan Kofaktor
-    primMatrix inversCofac(){
-        primMatrix M = new primMatrix(matrix, ROW, COL);
-        double det = determinanKofaktor(M);
-        primMatrix invers = new primMatrix(ROW, COL);
-        adjoin();
-        for (int i = 0; i < ROW; ++i){
-            for (int j = 0; j < COL; ++j){
-                invers.matrix[i][j] = this.matrix[i][j] * (1/det);
-            }
-        }
-        return invers;
     }
 
 }
