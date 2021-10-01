@@ -16,13 +16,19 @@ public class Main {
                     int inputMetode = metodeInput();
                     if(inputMetode == 1){
                         baris = inputBaris();
-                        kolom = inputBaris();
+                        kolom = inputKolom();
                         MatrixSPL M = new MatrixSPL(baris, kolom);
                         M.inputMat();
                         primMatrix tempMatrix = M.gauss();
                         M.matrix = tempMatrix.matrix;
                         M.check();
-                        M.displaySolution(M.ExactSolution());
+                        if(M.noSolution){
+                            M.InvalidSolution();
+                        }else if(M.oneSolution){
+                            M.displaySolution(M.ExactSolution());
+                        }else if(M.manySolution){
+                            M.displaySolution(M.ParametricSolution());
+                        }
                     }else if(inputMetode == 2){
                         fromtoFile file = new fromtoFile();
                         String filename = file.infile();
@@ -43,8 +49,14 @@ public class Main {
                         M.inputMat();
                         primMatrix tempMatrix = M.gaussJordan();
                         M.matrix = tempMatrix.matrix;
-                        boolean[] check = M.check();
-                        System.out.printf("%d %d %d", check[0], check[1], check[2]);
+                        M.check();
+                        if(M.noSolution){
+                            M.InvalidSolution();
+                        }else if(M.oneSolution){
+                            M.displaySolution(M.ExactSolution());
+                        }else if(M.manySolution){
+                            M.displaySolution(M.ParametricSolution());
+                        }
                     }else if(inputMetode == 2){
 
                     }
