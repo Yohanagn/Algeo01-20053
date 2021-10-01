@@ -117,14 +117,15 @@ class primMatrix {
                 leadRowIsZero = true;
             }
             while(leadRowIsZero && tempIdxBrs < M.COL -1 ){
-                if(tempIdxBrs >= M.ROW  && tempIdxKol<M.COL){
+                if(tempIdxBrs == (M.ROW-1)  && tempIdxKol<(M.COL-1)){
                     tempIdxBrs = i;
                     tempIdxKol += 1;
-                }else if(tempIdxBrs >= M.ROW && tempIdxKol>= (M.COL-1)){
+                }else if(tempIdxBrs == (M.ROW-1) && tempIdxKol==(M.COL-1)){
                     leadRowIsZero = false;
                     ZeroRow = true;
                 }else{
                     if (M.matrix[tempIdxBrs][tempIdxKol] != 0){
+                        System.out.println("terjadi tukar baris");
                         M.swapRow(i, tempIdxBrs);
                         leadRowIsZero = false;
                     }else{
@@ -158,10 +159,10 @@ class primMatrix {
                 leadRowIsZero = true;
             }
             while(leadRowIsZero && tempIdxBrs < M.COL -1 ){
-                if(tempIdxBrs >= M.ROW  && tempIdxKol<M.COL){
+                if(tempIdxBrs == (M.ROW-1)  && tempIdxKol<(M.COL-1)){
                     tempIdxBrs = i;
                     tempIdxKol += 1;
-                }else if(tempIdxBrs >= M.ROW && tempIdxKol>= (M.COL-1)){
+                }else if(tempIdxBrs == (M.ROW-1) && tempIdxKol==(M.COL-1)){
                     leadRowIsZero = false;
                     ZeroRow = true;
                 }else{
@@ -173,7 +174,6 @@ class primMatrix {
                     }
                 }
             }
-            M.displayMatrix();
             if(!ZeroRow){
                 double denominator = M.matrix[i][tempIdxKol];
                 M.multiplyRowConst(i, 1/denominator);
@@ -314,5 +314,6 @@ class primMatrix {
             }
         return identity;
     }
+    
 }
 
