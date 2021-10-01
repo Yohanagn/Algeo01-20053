@@ -112,30 +112,37 @@ class primMatrix {
             int tempIdxBrs = i;
             int tempIdxKol = i;
             boolean leadRowIsZero = false;
+            boolean ZeroRow = false;
             if(M.matrix[tempIdxBrs][tempIdxKol] == 0){
                 leadRowIsZero = true;
             }
-            while(leadRowIsZero){
-                if (M.matrix[tempIdxBrs][tempIdxKol] != 0){
-                    M.swapRow(i, tempIdxBrs);
-                    leadRowIsZero = false;
-                }
-                tempIdxBrs += 1;
-                if(tempIdxBrs >= M.ROW && leadRowIsZero){
+            while(leadRowIsZero && tempIdxBrs < M.COL -1 ){
+                if(tempIdxBrs >= M.ROW  && tempIdxKol<M.COL){
                     tempIdxBrs = i;
                     tempIdxKol += 1;
+                }else if(tempIdxBrs >= M.ROW && tempIdxKol>= (M.COL-1)){
+                    leadRowIsZero = false;
+                    ZeroRow = true;
+                }else{
+                    if (M.matrix[tempIdxBrs][tempIdxKol] != 0){
+                        M.swapRow(i, tempIdxBrs);
+                        leadRowIsZero = false;
+                    }else{
+                        tempIdxBrs += 1;
+                    }
                 }
             }
-            double denominator = M.matrix[i][tempIdxKol];
-            M.multiplyRowConst(i, 1/denominator);
-            for(int j=i+1; j<M.ROW; j++){
-                double numerator = M.matrix[j][tempIdxKol];
-                for (int k=0; k<M.COL; k++){
-                    M.matrix[j][k] -= numerator*M.matrix[i][k];
+            if(!ZeroRow){
+                double denominator = M.matrix[i][tempIdxKol];
+                M.multiplyRowConst(i, 1/denominator);
+                for(int j=i+1; j<M.ROW; j++){
+                    double numerator = M.matrix[j][tempIdxKol];
+                    for (int k=0; k<M.COL; k++){
+                        M.matrix[j][k] -= numerator*M.matrix[i][k];
+                    }
                 }
             }
         }
-        
         return M;
     }
 
@@ -146,27 +153,36 @@ class primMatrix {
             int tempIdxBrs = i;
             int tempIdxKol = i;
             boolean leadRowIsZero = false;
+            boolean ZeroRow = false;
             if(M.matrix[tempIdxBrs][tempIdxKol] == 0){
                 leadRowIsZero = true;
             }
-            while(leadRowIsZero){
-                if (M.matrix[tempIdxBrs][tempIdxKol] != 0){
-                    M.swapRow(i, tempIdxBrs);
-                    leadRowIsZero = false;
-                }
-                tempIdxBrs += 1;
-                if(tempIdxBrs >= M.ROW && leadRowIsZero){
+            while(leadRowIsZero && tempIdxBrs < M.COL -1 ){
+                if(tempIdxBrs >= M.ROW  && tempIdxKol<M.COL){
                     tempIdxBrs = i;
                     tempIdxKol += 1;
+                }else if(tempIdxBrs >= M.ROW && tempIdxKol>= (M.COL-1)){
+                    leadRowIsZero = false;
+                    ZeroRow = true;
+                }else{
+                    if (M.matrix[tempIdxBrs][tempIdxKol] != 0){
+                        M.swapRow(i, tempIdxBrs);
+                        leadRowIsZero = false;
+                    }else{
+                        tempIdxBrs += 1;
+                    }
                 }
             }
-            double denominator = M.matrix[i][tempIdxKol];
-            M.multiplyRowConst(i, 1/denominator);
-            for(int j=0; j<M.ROW; j++){
-                double numerator = M.matrix[j][tempIdxKol];
-                for(int k=0; k<M.COL; k++){
-                    if(j!=i){
-                        M.matrix[j][k] -= numerator*M.matrix[i][k];
+            M.displayMatrix();
+            if(!ZeroRow){
+                double denominator = M.matrix[i][tempIdxKol];
+                M.multiplyRowConst(i, 1/denominator);
+                for(int j=0; j<M.ROW; j++){
+                    double numerator = M.matrix[j][tempIdxKol];
+                    for(int k=0; k<M.COL; k++){
+                        if(j!=i){
+                            M.matrix[j][k] -= numerator*M.matrix[i][k];
+                        }
                     }
                 }
             }
