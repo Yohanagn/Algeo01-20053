@@ -3,9 +3,9 @@ import java.io.IOException;
 import java.util.Scanner;
 
 
+
 public class Main { 
-    public static void main(String[] args) throws IOException {
-        
+    public static void main(String[] args) throws IOException {       
         int inputMain;
         int baris, kolom;
         do{
@@ -24,21 +24,29 @@ public class Main {
                         M.check();
                         M.displaySolution(M.ExactSolution());
                     }else if(inputMetode == 2){
-                        
+                        fromtoFile file = new fromtoFile();
+                        String filename = file.infile();
+                        int[] size = file.ukuranMat(filename);
+                        double[][] mat = file.fileToMat(filename);
+                        MatrixSPL M = new MatrixSPL(mat, size[0], size[1]);
+                        primMatrix tempMatrix = M.gauss();
+                        M.matrix = tempMatrix.matrix;
+                        M.check();
+                        M.displaySolution(M.ExactSolution());
                     }
                 }else if(optionSPL == 2){
                     int inputMetode = metodeInput();
                     if(inputMetode == 1){
                         baris = inputBaris();
-                        kolom = inputBaris();
+                        kolom = inputKolom();
                         MatrixSPL M = new MatrixSPL(baris, kolom);
                         M.inputMat();
                         primMatrix tempMatrix = M.gaussJordan();
                         M.matrix = tempMatrix.matrix;
-                        M.check();
-                        M.displaySolution(M.ExactSolution());
+                        boolean[] check = M.check();
+                        System.out.printf("%d %d %d", check[0], check[1], check[2]);
                     }else if(inputMetode == 2){
-                        
+
                     }
                 }else if(optionSPL == 3){
                     int inputMetode = metodeInput();
@@ -47,16 +55,42 @@ public class Main {
                         kolom = inputBaris();
                         MatrixSPL M = new MatrixSPL(baris, kolom);
                         M.inputMat();
+                        double[][] mTemp = new double[baris][kolom];//Supaya disimpan ke file txt, matriks utama masih ada
+                        for(int i = 0; i<baris; i++){
+                            for(int j = 0; j<kolom; j++){
+                                mTemp[i][j]=M.matrix[i][j];
+                            }
+                        }
+                        double det = M.determinanKofaktor(M.takeA());
                         primMatrix tempMatrix = M.metodeInvers();
                         M.matrix = tempMatrix.matrix;
-                        M.checkII();
-                        if(M.noSolution){
+                        if(det == 0){
                             M.InvalidSolution();
                         }else{
                             M.displaySolution(M.ExactSolutionV2());
-                        }
+                            fromtoFile file = new fromtoFile();
+                            if(file.confirmSave()){
+                                file.splToFile(file.createFile(), mTemp, M.ExactSolutionV2());
+                            }
+                        } 
                     }else if(inputMetode == 2){
-                        
+                        fromtoFile file = new fromtoFile();
+                        String filename = file.infile();
+                        int[] size = file.ukuranMat(filename);
+                        double[][] mat = file.fileToMat(filename);
+                        double[][] matTemp = file.fileToMat(filename);
+                        MatrixSPL M = new MatrixSPL(mat, size[0], size[1]);
+                        double det = M.determinanKofaktor(M.takeA());
+                        primMatrix tempMatrix = M.metodeInvers();
+                        M.matrix = tempMatrix.matrix;
+                        if(det == 0){
+                            M.InvalidSolution();
+                        }else{
+                            M.displaySolution(M.ExactSolutionV2());
+                            if(file.confirmSave()){
+                                file.splToFile(file.createFile(), matTemp, M.ExactSolutionV2());
+                            }
+                        } 
                     }
                 }else if(optionSPL == 4){
                     int inputMetode = metodeInput();
@@ -65,16 +99,42 @@ public class Main {
                         kolom = inputBaris();
                         MatrixSPL M = new MatrixSPL(baris, kolom);
                         M.inputMat();
-                        primMatrix tempMatrix = M.metodeInvers();
+                        double[][] mTemp = new double[baris][kolom];//Supaya disimpan ke file txt, matriks utama masih ada
+                        for(int i = 0; i<baris; i++){
+                            for(int j = 0; j<kolom; j++){
+                                mTemp[i][j]=M.matrix[i][j];
+                            }
+                        }
+                        double det = M.determinanKofaktor(M.takeA());
+                        primMatrix tempMatrix = M.Cramer();
                         M.matrix = tempMatrix.matrix;
-                        M.checkII();
-                        if(M.noSolution){
+                        if(det == 0){
                             M.InvalidSolution();
                         }else{
                             M.displaySolution(M.ExactSolutionV2());
-                        }
+                            fromtoFile file = new fromtoFile();
+                            if(file.confirmSave()){
+                                file.splToFile(file.createFile(), mTemp, M.ExactSolutionV2());
+                            }
+                        } 
                     }else if(inputMetode == 2){
-                        
+                        fromtoFile file = new fromtoFile();
+                        String filename = file.infile();
+                        int[] size = file.ukuranMat(filename);
+                        double[][] mat = file.fileToMat(filename);
+                        double[][] matTemp = file.fileToMat(filename);
+                        MatrixSPL M = new MatrixSPL(mat, size[0], size[1]);
+                        double det = M.determinanKofaktor(M.takeA());
+                        primMatrix tempMatrix = M.Cramer();
+                        M.matrix = tempMatrix.matrix;
+                        if(det == 0){
+                            M.InvalidSolution();
+                        }else{
+                            M.displaySolution(M.ExactSolutionV2());
+                            if(file.confirmSave()){
+                                file.splToFile(file.createFile(), matTemp, M.ExactSolutionV2());
+                            }
+                        } 
                     }
                 }
             }else if(inputMain == 2){
