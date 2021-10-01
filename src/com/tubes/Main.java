@@ -2,6 +2,7 @@ package com.tubes;
 import java.io.IOException;
 import java.util.Scanner;
 
+
 public class Main { 
     public static void main(String[] args) throws IOException {
         
@@ -85,9 +86,28 @@ public class Main {
                         kolom = inputBaris();
                         primMatrix M = new primMatrix(baris, kolom);
                         M.inputMat();
+                        double[][] mTemp = new double[baris][kolom];//Supaya disimpan ke file txt, matriks utama masih ada
+                        for(int i = 0; i<baris; i++){
+                            for(int j = 0; j<kolom; j++){
+                                mTemp[i][j]=M.matrix[i][j];
+                            }
+                        }
                         System.out.printf("Determinan Matriks : %f", M.determinanOBE());
+                        fromtoFile file = new fromtoFile();
+                        if(file.confirmSave()){
+                            file.detToFile(file.createFile(), mTemp, M.determinanOBE());
+                        }
                     }else if(inputMetode == 2){
-                        
+                        fromtoFile file = new fromtoFile();
+                        String filename = file.infile();
+                        int[] size = file.ukuranMat(filename);
+                        double[][] mat = file.fileToMat(filename);
+                        double[][] mtemp = file.fileToMat(filename);
+                        primMatrix M = new primMatrix(mat, size[0], size[1]);
+                        System.out.printf("Determinan Matriks : %f", M.determinanOBE());
+                        if(file.confirmSave()){
+                            file.detToFile(file.createFile(), mtemp, M.determinanOBE());
+                        }
                     }
                 }else if(optionDeterminan == 2){
                     int inputMetode = metodeInput();
@@ -97,8 +117,20 @@ public class Main {
                         primMatrix M = new primMatrix(baris, kolom);
                         M.inputMat();
                         System.out.printf("Determinan Matriks : %f", M.determinanKofaktor(M));
+                        fromtoFile file = new fromtoFile();
+                        if(file.confirmSave()){
+                            file.detToFile(file.createFile(), M.matrix, M.determinanKofaktor(M));
+                        }
                     }else if(inputMetode == 2){
-                        
+                        fromtoFile file = new fromtoFile();
+                        String filename = file.infile();
+                        int[] size = file.ukuranMat(filename);
+                        double[][] mat = file.fileToMat(filename);
+                        primMatrix M = new primMatrix(mat, size[0], size[1]);
+                        System.out.printf("Determinan Matriks : %f", M.determinanKofaktor(M));
+                        if(file.confirmSave()){
+                            file.detToFile(file.createFile(), M.matrix, M.determinanKofaktor(M));
+                        }
                     }
                 }
             }else if(inputMain == 3){
@@ -110,10 +142,41 @@ public class Main {
                         kolom = inputBaris();
                         MatrixInverse M = new MatrixInverse(baris, kolom);
                         M.inputMat();
-                        primMatrix tempMatrix = M.InversOBE();
-                        tempMatrix.displayMatrix();
+                        double[][] mTemp = new double[baris][kolom]; //Supaya disimpan ke file txt, matriks utama masih ada
+                        for(int i = 0; i<baris; i++){
+                            for(int j = 0; j<kolom; j++){
+                                mTemp[i][j]=M.matrix[i][j];
+                            }
+                        }
+                        MatrixInverse Mtemp = new MatrixInverse(M.matrix, baris, kolom);
+                        double det = M.determinanKofaktor(M);
+                        if (det==0){
+                            System.out.println("Matriks tidak memiliki invers.");
+                        }else{
+                            primMatrix tempMatrix = M.InversOBE();
+                            tempMatrix.displayMatrix();
+                            fromtoFile file = new fromtoFile();
+                            if(file.confirmSave()){
+                                file.matToFile(file.createFile(), Mtemp.matrix, tempMatrix.matrix);
+                            }
+                        }                       
                     }else if(inputMetode == 2){
-                        
+                        fromtoFile file = new fromtoFile();
+                        String filename = file.infile();
+                        int[] size = file.ukuranMat(filename);
+                        double[][] mat = file.fileToMat(filename);
+                        double[][] matTemp = file.fileToMat(filename);
+                        MatrixInverse M = new MatrixInverse(mat, size[0], size[1]);
+                        double det = M.determinanKofaktor(M);
+                        if(det == 0){
+                            System.out.println("Matriks tidak memiliki invers.");
+                        }else{
+                            primMatrix tempMatrix = M.InversOBE();
+                            tempMatrix.displayMatrix();
+                            if(file.confirmSave()){
+                                file.matToFile(file.createFile(), matTemp, tempMatrix.matrix);
+                            }
+                        }
                     }
                 }else if(optionInverse == 2){
                     int inputMetode = metodeInput();
@@ -122,16 +185,92 @@ public class Main {
                         kolom = inputBaris();
                         MatrixInverse M = new MatrixInverse(baris, kolom);
                         M.inputMat();
-                        primMatrix tempMatrix = M.inversCofac();
-                        tempMatrix.displayMatrix();
+                        double[][] mTemp = new double[baris][kolom];//Supaya disimpan ke file txt, matriks utama masih ada
+                        for(int i = 0; i<baris; i++){
+                            for(int j = 0; j<kolom; j++){
+                                mTemp[i][j]=M.matrix[i][j];
+                            }
+                        }
+                        double det = M.determinanKofaktor(M);
+                        if(det == 0){
+                            System.out.println("Matriks tidak memiliki invers.");
+                        }else{
+                            primMatrix tempMatrix = M.inversCofac();
+                            tempMatrix.displayMatrix();
+                            fromtoFile file = new fromtoFile();
+                            if(file.confirmSave()){
+                                file.matToFile(file.createFile(), mTemp, tempMatrix.matrix);
+                            }
+                        }
                     }else if(inputMetode == 2){
-                        
+                        fromtoFile file = new fromtoFile();
+                        String filename = file.infile();
+                        int[] size = file.ukuranMat(filename);
+                        double[][] mat = file.fileToMat(filename);
+                        double[][] matTemp = file.fileToMat(filename);
+                        MatrixInverse M = new MatrixInverse(mat, size[0], size[1]);
+                        double det = M.determinanKofaktor(M);
+                        if(det == 0){
+                            System.out.println("Matriks tidak memiliki invers.");
+                        }else{
+                            primMatrix tempMatrix = M.inversCofac();
+                            tempMatrix.displayMatrix();
+                            if(file.confirmSave()){
+                                file.matToFile(file.createFile(), matTemp, tempMatrix.matrix);
+                            }
+                        }
                     }
                 }
             }else if(inputMain == 4){
                 int inputMetode = metodeInput();
+                if(inputMetode == 1){
+                    baris = inputBaris();
+                    kolom = inputKolom();
+                    MatrixInterpolasi M = new MatrixInterpolasi(baris, kolom);
+                    M.inputMat();
+                    primMatrix has = M.matrixHasil();
+                    double[] est = M.interpolasi();
+                    fromtoFile file = new fromtoFile();
+                    if(file.confirmSave()){
+                        file.interToFile(file.createFile(),M.matrix, has.matrix, est);
+                    }
+                }else{
+                    fromtoFile file = new fromtoFile();
+                    String filename = file.infile();
+                    int[] size = file.ukuranMat(filename);
+                    double[][] mat = file.fileToMat(filename);
+                    MatrixInterpolasi M  = new MatrixInterpolasi(mat, size[0], size[1]);
+                    primMatrix temp = M.matrixHasil();
+                    double[] est = M.interpolasi();
+                    if(file.confirmSave()){
+                        file.interToFile(file.createFile(),M.matrix, temp.matrix, est);
+                    }
+                }
             }else if(inputMain == 5){
                 int inputMetode = metodeInput();
+                if(inputMetode == 1){
+                    baris = inputBaris();
+                    kolom = inputKolom();
+                    MatrixRegresi M = new MatrixRegresi(baris, kolom);
+                    M.inputMat();
+                    primMatrix temp = M.HasilReg();
+                    double[] reg = M.estimasiReq();
+                    fromtoFile file = new fromtoFile();
+                    if(file.confirmSave()){
+                        file.regToFile(file.createFile(),M.matrix, temp.matrix, reg);
+                    }
+                }else{
+                    fromtoFile file = new fromtoFile();
+                    String filename = file.infile();
+                    int[] size = file.ukuranMat(filename);
+                    double[][] mat = file.fileToMat(filename);
+                    MatrixRegresi M  = new MatrixRegresi(mat, size[0], size[1]);
+                    primMatrix temp = M.HasilReg();
+                    double[] reg = M.estimasiReq();
+                    if(file.confirmSave()){
+                        file.regToFile(file.createFile(),M.matrix, temp.matrix, reg);
+                    }
+                }
             }else if(inputMain == 6){
                 System.out.print("\033[H\033[2J"); 
                 System.out.flush();  
