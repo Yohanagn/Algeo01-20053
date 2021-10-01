@@ -1,9 +1,6 @@
 package com.tubes;
 
 class MatrixSPL extends primMatrix {
-    boolean oneSolution = false;
-    boolean manySolution = false;
-    boolean noSolution = false;
     
     MatrixSPL(int row, int col){super(row, col);}
     MatrixSPL(double[][] m, int row, int col){super(m, row, col);}
@@ -48,35 +45,48 @@ class MatrixSPL extends primMatrix {
         return Has;
     }
 
-    void check(){
+    boolean[] check(){
         primMatrix A = takeA();
         primMatrix b = takeb();
-        for(int i=0; i<A.ROW; i++){
-            boolean zeroInRow = true;
-            for(int j=0; j<A.COL; j++){
-                if(A.matrix[i][j] != 0){
-                    zeroInRow = false;
+        boolean[] cek = new boolean[3];
+        if (A.COL == A.ROW){
+            int[] indexWithZeroRow = new int[99];
+            int tempIdx =0;
+            boolean isAllHaveLeadCoef = true;
+            
+            for(int i=0; i<A.ROW; i++){
+                boolean isZeroRow = true;
+                for(int j=0; j<A.COL; j++){
+                    if(A.matrix[i][j] != 0){
+                        isZeroRow = false;
+                    }
+                }
+                if(isZeroRow){
+                    isAllHaveLeadCoef = false;
+                    indexWithZeroRow[tempIdx] = i;
+                    tempIdx += 1;
                 }
             }
-            if(zeroInRow){
-                if(b.matrix[i][0] != 0){
-                    this.noSolution = true;
+            if(isAllHaveLeadCoef){
+                cek[1] = true;
+            }else{
+                boolean tempManySolution = true;
+                for(int i=0; i<tempIdx; i++){
+                    if(b.matrix[indexWithZeroRow[i]][0] != 0){
+                        tempManySolution = false;
+                    }
+                }
+                if(tempManySolution){
+                    cek[2] = true;
                 }else{
-                    this.manySolution= true;
+                    cek[0] = true;
                 }
             }
-        }
-        if(!this.noSolution && !manySolution){
-            oneSolution = true;
-        }
-    }
 
-    void checkII(){
-        if (determinanOBE() == 0){
-            this.noSolution = true;
-        }else{
-            this.oneSolution = true;
+        }else if(A.COL > A.ROW){
+            cek[2] = true;
         }
+        return cek;
     }
 
     void InvalidSolution(){
@@ -109,31 +119,42 @@ class MatrixSPL extends primMatrix {
         primMatrix A = takeA();
         primMatrix b = takeb();
         String[] has = new String[A.ROW];
-        for(int i=0; i<b.ROW; i++){
-            has[i] = String.valueOf(b.matrix[i][0]) + " = ";
+        for(int i=A.ROW-1; i>=0; i--){
+            int j=0;
+            boolean flag = true;
+            //System.out.printf("%f", has[i]);
+            while(j < A.COL && flag){
+                if(A.matrix[i][j] != 0){
+                    flag = false;
+                    has[i] = "x" + (j+1) +  " = " + b.matrix[i][0];
+                }
+                j++;
+            }
         }
         char[] gnrtVar = {'s','t','u','v','w','x','y','z','a','b',
                           'c','d','e','f','g','h','i','j','k','l',
                           'm','n','o','p','q','r'};
         for(int i=A.ROW-1; i>= 0; i--){
+            boolean ZeroRow = false;
             boolean foundLeadRow = false;
             int idxleadRow=0;
-            while(!foundLeadRow){
-                if(A.matrix[i][idxleadRow] != 0){
-                    foundLeadRow = false;
+            while(!foundLeadRow & !ZeroRow){
+                if(idxleadRow == (A.COL-1) && A.matrix[i][idxleadRow] == 0){
+                    ZeroRow = true;
+                }else if(A.matrix[i][idxleadRow] != 0){
+                    foundLeadRow = true;
                 }else{
                     idxleadRow += 1;
                 }
             }
-            has[i] = "x" + (idxleadRow+1) + " = ";
-            for(int j=A.COL-1; j>idxleadRow; j--){
+            if(!ZeroRow){
                 int idxgetVar = 0;
-                if(j != idxleadRow+1){
-                    has[i] += (-1)*A.matrix[i][j] + gnrtVar[idxgetVar] + " + ";
-                }else{
-                    has[i] += (-1)*A.matrix[i][j] + gnrtVar[idxgetVar] ;
+                for(int j=A.COL-1; j>idxleadRow; j--){
+                    if(j != idxleadRow && A.matrix[i][j] != 0){
+                        has[i] += " + " + (-1)*A.matrix[i][j] +""+ gnrtVar[idxgetVar] ;
+                    }
+                    idxgetVar += 1;
                 }
-                idxgetVar += 1;
             }
         }
         return has;
