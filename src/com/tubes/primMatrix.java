@@ -95,7 +95,7 @@ class primMatrix {
         primMatrix m3 = new primMatrix(m1.ROW, m2.COL);
         for(int i=0; i<m1.ROW; i++){
             for(int j=0; j<m2.COL; j++){
-                int temp = 0;
+                double temp = 0;
                 for(int k=0; k<m1.COL; k++){
                     temp += m1.matrix[i][k]*m2.matrix[k][j];
                 }
