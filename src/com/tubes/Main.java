@@ -19,6 +19,12 @@ public class Main {
                         kolom = inputKolom();
                         MatrixSPL M = new MatrixSPL(baris, kolom);
                         M.inputMat();
+                        double[][] mTemp = new double[baris][kolom];//Supaya disimpan ke file txt, matriks utama masih ada
+                        for(int i = 0; i<baris; i++){
+                            for(int j = 0; j<kolom; j++){
+                                mTemp[i][j]=M.matrix[i][j];
+                            }
+                        }
                         primMatrix tempMatrix = M.gauss();
                         M.matrix = tempMatrix.matrix;
                         M.check();
@@ -26,19 +32,41 @@ public class Main {
                             M.InvalidSolution();
                         }else if(M.oneSolution){
                             M.displaySolution(M.ExactSolution());
+                            fromtoFile file = new fromtoFile();
+                            if(file.confirmSave()){
+                                file.splToFile(file.createFile(), mTemp, M.ExactSolution());
+                            }
                         }else if(M.manySolution){
                             M.displaySolution(M.ParametricSolution());
+                            System.out.println(M.ParametricSolution().length);
+                            fromtoFile file = new fromtoFile();
+                            if(file.confirmSave()){
+                                file.splToFile(file.createFile(), mTemp, M.ParametricSolution());
+                            }
                         }
                     }else if(inputMetode == 2){
                         fromtoFile file = new fromtoFile();
                         String filename = file.infile();
                         int[] size = file.ukuranMat(filename);
                         double[][] mat = file.fileToMat(filename);
+                        double[][] mTemp = file.fileToMat(filename);
                         MatrixSPL M = new MatrixSPL(mat, size[0], size[1]);
                         primMatrix tempMatrix = M.gauss();
                         M.matrix = tempMatrix.matrix;
                         M.check();
-                        M.displaySolution(M.ExactSolution());
+                        if(M.noSolution){
+                            M.InvalidSolution();
+                        }else if(M.oneSolution){
+                            M.displaySolution(M.ExactSolution());
+                            if(file.confirmSave()){
+                                file.splToFile(file.createFile(), mTemp, M.ExactSolution());
+                            }
+                        }else if(M.manySolution){
+                            M.displaySolution(M.ParametricSolution());
+                            if(file.confirmSave()){
+                                file.splToFile(file.createFile(), mTemp, M.ParametricSolution());
+                            }
+                        }
                     }
                 }else if(optionSPL == 2){
                     int inputMetode = metodeInput();
@@ -47,6 +75,12 @@ public class Main {
                         kolom = inputKolom();
                         MatrixSPL M = new MatrixSPL(baris, kolom);
                         M.inputMat();
+                        double[][] mTemp = new double[baris][kolom];//Supaya disimpan ke file txt, matriks utama masih ada
+                        for(int i = 0; i<baris; i++){
+                            for(int j = 0; j<kolom; j++){
+                                mTemp[i][j]=M.matrix[i][j];
+                            }
+                        }
                         primMatrix tempMatrix = M.gaussJordan();
                         M.matrix = tempMatrix.matrix;
                         M.check();
@@ -54,11 +88,40 @@ public class Main {
                             M.InvalidSolution();
                         }else if(M.oneSolution){
                             M.displaySolution(M.ExactSolution());
+                            fromtoFile file = new fromtoFile();
+                            if(file.confirmSave()){
+                                file.splToFile(file.createFile(), mTemp, M.ExactSolution());
+                            }
                         }else if(M.manySolution){
                             M.displaySolution(M.ParametricSolution());
+                            fromtoFile file = new fromtoFile();
+                            if(file.confirmSave()){
+                                file.splToFile(file.createFile(), mTemp, M.ParametricSolution());
+                            }                          
                         }
                     }else if(inputMetode == 2){
-
+                        fromtoFile file = new fromtoFile();
+                        String filename = file.infile();
+                        int[] size = file.ukuranMat(filename);
+                        double[][] mat = file.fileToMat(filename);
+                        double[][] mTemp = file.fileToMat(filename);
+                        MatrixSPL M = new MatrixSPL(mat, size[0], size[1]);
+                        primMatrix tempMatrix = M.gaussJordan();
+                        M.matrix = tempMatrix.matrix;
+                        M.check();
+                        if(M.noSolution){
+                            M.InvalidSolution();
+                        }else if(M.oneSolution){
+                            M.displaySolution(M.ExactSolution());
+                            if(file.confirmSave()){
+                                file.splToFile(file.createFile(), mTemp, M.ExactSolution());
+                            }
+                        }else if(M.manySolution){
+                            M.displaySolution(M.ParametricSolution());
+                            if(file.confirmSave()){
+                                file.splToFile(file.createFile(), mTemp, M.ParametricSolution());
+                            }
+                        }
                     }
                 }else if(optionSPL == 3){
                     int inputMetode = metodeInput();
