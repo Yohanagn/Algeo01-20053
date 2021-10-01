@@ -178,23 +178,6 @@ public class fromtoFile {
         }
     }
 
-
-    //SPL yang memiliki nilai tunggal --> Hanya dipakai untuk Cramer dan Metode Matriks Balikan
-    public static void spl1ToFile(String filename, double[][] matrix, int row, int col){
-        try{
-            FileWriter newFile = new FileWriter(saveLetak()+"\\"+filename);
-            for (int i = 0; i<row; i++){
-                for (int j = 0; j < col; j++){
-                    newFile.write("x" + (i+1) + " = " + matrix[i][j]);
-                }
-                newFile.write("\n");
-            }
-            newFile.close();
-        }catch (IOException e){
-
-        }
-    }
-
     //Interpolasi Ke File
     public static void interToFile(String filename,double[][] matrix, double[][] has, double[] est){
         int idxcol = has[0].length-1;
