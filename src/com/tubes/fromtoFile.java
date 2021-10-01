@@ -140,10 +140,17 @@ public class fromtoFile {
     
 
     // Membuat Matriks menjadi file --> Dipakai di matriks Balikan
-    public static void matToFile(String filename, double[][] matrix){
+    public static void matToFile(String filename,double[][] matrix, double[][] has){
         try{
             FileWriter newFile = new FileWriter(saveLetak()+"\\"+filename);
             for (double[] row : matrix){
+                for(double el : row){
+                    newFile.write(el + " ");
+                }
+                newFile.write("\n");
+            }
+            newFile.write("\nHasil Invers : \n");
+            for (double[] row : has){
                 for(double el : row){
                     newFile.write(el + " ");
                 }
@@ -155,22 +162,59 @@ public class fromtoFile {
         }
     }
 
-
-
-    //Interpolasi Ke File
-    public static void interToFile(String filename, double[][] matrix, double[] est){
-        int idxcol = matrix[0].length-1;
+    public static void detToFile(String filename, double[][] matrix, double det){
         try{
             FileWriter newFile = new FileWriter(saveLetak()+"\\"+filename);
-            newFile.write("Persamaan Interpolasi : ");
-            for(int i = 0; i<matrix.length; i++){
+            for (double[] row : matrix){
+                for(double el : row){
+                    newFile.write(el + " ");
+                }
+                newFile.write("\n");
+            }
+            newFile.write("\nDeterminan dari Matriks adalah" + det);
+            newFile.close();
+        }catch (IOException e){
+
+        }
+    }
+
+
+    //SPL yang memiliki nilai tunggal --> Hanya dipakai untuk Cramer dan Metode Matriks Balikan
+    public static void spl1ToFile(String filename, double[][] matrix, int row, int col){
+        try{
+            FileWriter newFile = new FileWriter(saveLetak()+"\\"+filename);
+            for (int i = 0; i<row; i++){
+                for (int j = 0; j < col; j++){
+                    newFile.write("x" + (i+1) + " = " + matrix[i][j]);
+                }
+                newFile.write("\n");
+            }
+            newFile.close();
+        }catch (IOException e){
+
+        }
+    }
+
+    //Interpolasi Ke File
+    public static void interToFile(String filename,double[][] matrix, double[][] has, double[] est){
+        int idxcol = has[0].length-1;
+        try{
+            FileWriter newFile = new FileWriter(saveLetak()+"\\"+filename);
+            for (double[] row : matrix){
+                for(double el : row){
+                    newFile.write(el + " ");
+                }
+                newFile.write("\n");
+            }
+            newFile.write("\nPersamaan Interpolasi : ");
+            for(int i = 0; i<has.length; i++){
                 if (i==0){
-                    newFile.write("" + matrix[i][idxcol]);
+                    newFile.write("" + has[i][idxcol]);
                 }else{
-                    if (matrix[i][idxcol] < 0){
-                        newFile.write(" "+ matrix[i][idxcol]+ "X^("+i+")");
+                    if (has[i][idxcol] < 0){
+                        newFile.write(" "+ has[i][idxcol]+ "X^("+i+")");
                     }else{
-                        newFile.write(" +"+ matrix[i][idxcol]+ "X^("+i+")");
+                        newFile.write(" +"+ has[i][idxcol]+ "X^("+i+")");
                     }
                 }
             }
@@ -184,19 +228,25 @@ public class fromtoFile {
 
 
     //Regresi Ke File
-    public static void regToFile(String filename, double[][] matrix, double[] req){
-        int idxcol = matrix[0].length-1;
+    public static void regToFile(String filename,double[][] matrix, double[][] has, double[] req){
+        int idxcol = has[0].length-1;
         try{
             FileWriter newFile = new FileWriter(saveLetak()+"\\"+filename);
-            newFile.write("Persamaan Regresi : ");
-            for(int i = 0; i<matrix.length; i++){
+            for (double[] row : matrix){
+                for(double el : row){
+                    newFile.write(el + " ");
+                }
+                newFile.write("\n");
+            }
+            newFile.write("\nPersamaan Regresi : ");
+            for(int i = 0; i<has.length; i++){
                 if (i==0){
-                    newFile.write("" + matrix[i][idxcol]);
+                    newFile.write("" + has[i][idxcol]);
                 }else{
-                    if (matrix[i][idxcol] < 0){
-                        newFile.write(" "+ matrix[i][idxcol]+ "X"+i);
+                    if (has[i][idxcol] < 0){
+                        newFile.write(" "+ has[i][idxcol]+ "X"+i);
                     }else{
-                        newFile.write(" +"+ matrix[i][idxcol]+ "X"+i);
+                        newFile.write(" +"+ has[i][idxcol]+ "X"+i);
                     }
                 }
             }
@@ -215,3 +265,4 @@ public class fromtoFile {
         }
     }
 }
+    
