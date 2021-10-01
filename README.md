@@ -110,9 +110,7 @@ Masukkan pilihan
   input cara memasukkan nilai matriks
   Jika input dari konsole maka akan diminta banyak baris dan kolom lalu memasukkan nilai pada matriks
   Jika input dari file maka akan diminta nama file lengkap dengan extenteion (.txt)
-  input matriks dengan aturan ( x1, y1
-                                x2, y2
-                                dst..)
+  input matriks dengan aturan ( x y ) di"enter" lalu titik yang lain dilanjutkan ke baris selanjutnya
   Setelah hasil ditampilkan ke layar maka akan diminta nilai X yang ingin diestimasi.Lalu diminta konfirmasi save atau tidak.
   Jika melakukan save, maka akan diminta nama file yang ingin dibuat beserta dengan extensionnya.
   
@@ -127,9 +125,7 @@ Masukkan pilihan
   input cara memasukkan nilai matriks
   Jika input dari konsole maka akan diminta banyak baris dan kolom lalu memasukkan nilai pada matriks
   Jika input dari file maka akan diminta nama file lengkap dengan extenteion (.txt)
-  input matriks dengan aturan ( variabelX1, varibel X2, .., variabel Xn, Nilai Y)
-                                      x       x                 xn          y
-                                      x       x                 xn          y
+  input matriks dengan aturan ( variabelX1, varibel X2, .., variabel Xn, Nilai Y) lalu dilanjutkan ke baris selanjutnya untuk data yang baru
   Setelah hasil ditampilkan ke layar maka akan diminta nilai X yang ingin diestimasi.Lalu diminta konfirmasi save atau tidak.
   Jika melakukan save, maka akan diminta nama file yang ingin dibuat beserta dengan extensionnya.
   
