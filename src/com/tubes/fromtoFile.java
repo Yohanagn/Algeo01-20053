@@ -190,9 +190,11 @@ public class fromtoFile {
                 newFile.write("\n");
             }
             newFile.write("\nHasil persamaan : \n");
-            for(int i=0; i<spl.length; i++){
-                newFile.write(spl[i]);
-                newFile.write("\n");
+            int i = 0;
+            while(i<spl.length && spl[i]!=null){
+                    newFile.write(spl[i]);
+                    newFile.write("\n");
+                i++;
             }
             newFile.close();
         }catch (IOException e){
