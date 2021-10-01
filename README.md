@@ -48,6 +48,9 @@ Masukkan pilihan
   Jika input dari file maka akan diminta nama file lengkap dengan extenteion (.txt)
   Setelah hasil ditampilkan ke layar maka akan diminta konfirmasi save atau tidak.
   Jika melakukan save, maka akan diminta nama file yang ingin dibuat beserta dengan extensionnya.
+  
+  
+  
 2. Determinan
 
 
@@ -73,6 +76,8 @@ Masukkan pilihan
   Jika input dari file maka akan diminta nama file lengkap dengan extenteion (.txt)
   Setelah hasil ditampilkan ke layar maka akan diminta konfirmasi save atau tidak.
   Jika melakukan save, maka akan diminta nama file yang ingin dibuat beserta dengan extensionnya.
+  
+  
 3. Invers Matriks
 
 
@@ -94,6 +99,8 @@ Masukkan pilihan
   Jika input dari file maka akan diminta nama file lengkap dengan extenteion (.txt)
   Setelah hasil ditampilkan ke layar maka akan diminta konfirmasi save atau tidak.
   Jika melakukan save, maka akan diminta nama file yang ingin dibuat beserta dengan extensionnya.
+  
+  
 4. Intrepolasi
 
 
@@ -108,6 +115,8 @@ Masukkan pilihan
                                 dst..)
   Setelah hasil ditampilkan ke layar maka akan diminta nilai X yang ingin diestimasi.Lalu diminta konfirmasi save atau tidak.
   Jika melakukan save, maka akan diminta nama file yang ingin dibuat beserta dengan extensionnya.
+  
+  
 5. Regresi Linear Berganda
 
 
