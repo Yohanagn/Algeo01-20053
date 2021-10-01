@@ -66,7 +66,6 @@ class primMatrix {
             this.matrix[row2][i] = temp;
         }
     }
-    
     primMatrix takeA(){
         primMatrix M = new primMatrix(ROW,COL-1);
         for(int i=0; i<this.ROW; i++){
@@ -83,7 +82,7 @@ class primMatrix {
         }
         return M;
     }
-    
+
     //MENGALIKAN BARIS DENGAN KONSTANTA
     void multiplyRowConst(int row, double x){
         for(int i=0; i<this.COL; i++){
@@ -263,9 +262,7 @@ class primMatrix {
     primMatrix InversOBE(){
         primMatrix M = new primMatrix(this.matrix, ROW, COL);
         primMatrix identity = identity();
-        if (determinanKofaktor(M) == 0){
-            identity = null;
-        }else{
+        
             for(int i=0; i<M.ROW; i++){
                 if(matrix[i][i] == 0){
                     boolean notFind = true;
@@ -299,7 +296,6 @@ class primMatrix {
                     }
                 }
             }
-        }
         return identity;
     }
 }
